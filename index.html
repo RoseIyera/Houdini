@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>CSS Houdini Waves 🌊✨</title>
+</head>
+<body>
+    <h1 class="heading">CSS Houdini Waves 🌊✨</h1>
+    <div class="wave-background" id="wave1"></div>
+    <div class="wave-background reverse-wave" id="wave2"></div>
+    <script>
+        //Here I am registering the Houdini paint worklet
+        if ('paintWorklet' in CSS) {
+            CSS.paintWorklet.addModule('waves-worklet.js')
+                .catch(error => console.error('Failed to load paint worklet:', error));
+        }
+
+        //animating the waves via CSS custom properties
+        let waveOffset1 = 0;
+        let waveOffset2 = 3000;
+
+        function animate() {
+            waveOffset1 += 1.5;
+            waveOffset2 -= 1.5;
+
+            //Updated CSS custom properties for each wave
+            document.getElementById('wave1').style.setProperty('--wave-offset', waveOffset1);
+            document.getElementById('wave2').style.setProperty('--wave-offset', waveOffset2);
+
+            // Loop the offset to maintain continuous motion
+            if (waveOffset1 > 3000) waveOffset1 = 0;
+            if (waveOffset2 < 0) waveOffset2 = 3000;
+
+            requestAnimationFrame(animate);
+        }
+
+        // Start the animation
+        requestAnimationFrame(animate);
+    </script>
+</body>
+</html>
